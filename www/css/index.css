@@ -1,0 +1,11 @@
+#navbar a {
+    color: white;
+}
+
+.online {
+    background-color: green;
+}
+
+.offline {
+    background-color: red;
+}
