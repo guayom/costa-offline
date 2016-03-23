@@ -45,6 +45,9 @@ var app = {
     this.updateProvincias();
     this.updateCantones();
     this.updateDistritos();
+    this.updateCaracteristicas();
+    this.updateMensajes();
+    this.updatePropietarios();
     $('#provincia').change();
   },
   receivedEvent: function (id) {
@@ -218,6 +221,18 @@ var app = {
       localStorage.setItem('distritos', JSON.stringify(data));
       app.updateDistritos();
     });
+    $.getJSON('http://www.costa506realestate.com/caracteristicas.json', function(data) {
+      localStorage.setItem('caracteristicas', JSON.stringify(data));
+      app.updateCaracteristicas();
+    });
+    $.getJSON('http://www.costa506realestate.com/mensajes.json', function(data) {
+      localStorage.setItem('mensajes', JSON.stringify(data));
+      app.updateMensajes();
+    });
+    $.getJSON('http://www.costa506realestate.com/propietarios.json', function(data) {
+      localStorage.setItem('propietarios', JSON.stringify(data));
+      app.updatePropietarios();
+    });
     $('#provincia').change();
   },
   updateTipos: function() {
@@ -277,6 +292,65 @@ var app = {
       $(JSON.parse(distritos)).each(function() {
         $('#distrito_copy').append(
           $('<option></option>', { value: this['nombre'] }).attr('data-provincia-id', this['provincia_id']).attr('data-canton-id', this['canton_id']).text(this['nombre'])
+        );
+      });
+    }
+  },
+  updatePropietarios: function() {
+    var propietarios = localStorage.getItem('propietarios');
+    if (propietarios != null) {
+      $('#propietario_id').html('');
+      $('#propietario_id').append(
+        $('<option></option>', { value: '' }).text('Buscar')
+      );
+
+      $(JSON.parse(propietarios)).each(function() {
+        $('#propietario_id').append(
+          $('<option></option>', { value: this['id'] }).text(
+            this['nombre'] + ' ' + this['apellido'] + ', ' + this['celular']
+          )
+        );
+      });
+    }
+  },
+  updateCaracteristicas: function() {
+    var caracteristicas = localStorage.getItem('caracteristicas');
+    if (caracteristicas != null) {
+      $('#caracteristicas').html('');
+
+      $(JSON.parse(caracteristicas)).each(function() {
+        $('#caracteristicas').append(
+          $('<div></div>', {class: 'checkbox'}).html(
+            $('<label></label>').html([
+              $('<input>', {
+                type: 'checkbox',
+                name: 'caracteristica_ids',
+                value: this['id']
+              }),
+              this['titulo']
+            ])
+          )
+        );
+      });
+    }
+  },
+  updateMensajes: function() {
+    var mensajes = localStorage.getItem('mensajes');
+    if (mensajes != null) {
+      $('#mensajes').html('');
+
+      $(JSON.parse(mensajes)).each(function() {
+        $('#mensajes').append(
+          $('<div></div>', {class: 'checkbox'}).html(
+            $('<label></label>').html([
+              $('<input>', {
+                type: 'checkbox',
+                name: 'mensaje_ids',
+                value: this['id']
+              }),
+              this['mensaje']
+            ])
+          )
         );
       });
     }

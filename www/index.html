@@ -195,16 +195,7 @@
           </div>
 
           <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <% Caracteristica.all.each do |c| %>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="caracteristica_ids" value="<%= c.id %>">
-                  <%= c.titulo %>
-                </label>
-              </div>
-              <% end %>
-            </div>
+            <div id="caracteristicas" class="col-sm-offset-2 col-sm-10"></div>
           </div>
 
           <div class="form-group">
@@ -249,24 +240,6 @@
             </label>
             <div class="col-sm-10">
               <input type="number" id="cuota_mantenimiento" name="cuota_mantenimiento" class="form-control">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="area_terreno" class="col-sm-2 control-label">
-              Area terreno
-            </label>
-            <div class="col-sm-10">
-              <input type="number" id="area_terreno" name="area_terreno" class="form-control">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="area_construccion" class="col-sm-2 control-label">
-              Area construccion
-            </label>
-            <div class="col-sm-10">
-              <input type="number" id="area_construccion" name="area_construccion" class="form-control">
             </div>
           </div>
 
@@ -385,16 +358,7 @@
           </div>
 
           <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-              <% Mensaje.all.each do |m| %>
-              <div class="checkbox">
-                <label>
-                  <input type="checkbox" name="mensaje_ids" value="<%= m.id %>">
-                  <%= m.mensaje %>
-                </label>
-              </div>
-              <% end %>
-            </div>
+            <div id="mensajes" class="col-sm-offset-2 col-sm-10"></div>
           </div>
 
           <div class="form-group">
