@@ -58,8 +58,12 @@ var app = {
   onDeviceReady: function () {
     app.receivedEvent('deviceready');
 
+    $.ajaxSetup({ cache: false });
     moment.locale('es');
     app.updateSavedProperties();
+
+    $('#email').val(localStorage.getItem('email'));
+    $('#password').val(localStorage.getItem('password'));
   },
   onFormSubmit: function(event) {
     app.receivedEvent('submit');
@@ -205,35 +209,52 @@ var app = {
   },
   onRefreshData: function() {
     app.receivedEvent('onRefreshData');
-    $.getJSON('http://www.costa506realestate.com/tipos.json', function(data) {
+
+    $.ajaxSetup({
+      cache: false
+    });
+
+    localStorage.setItem('email', $('#email').val());
+    localStorage.setItem('password', $('#password').val());
+
+    var auth = 'email=' + localStorage.getItem('email') + '&password=' + localStorage.getItem('password');
+
+    $.getJSON('http://www.costa506realestate.com/tipos.json?' + auth, function(data) {
+    // $.getJSON('http://localhost:3000/tipos.json?' + auth, function(data) {
       localStorage.setItem('tipos', JSON.stringify(data));
       app.updateTipos();
+
+      $.getJSON('http://www.costa506realestate.com/provincias.json?' + auth, function(data) {
+        localStorage.setItem('provincias', JSON.stringify(data));
+        app.updateProvincias();
+      });
+      $.getJSON('http://www.costa506realestate.com/cantones.json?' + auth, function(data) {
+        localStorage.setItem('cantones', JSON.stringify(data));
+        app.updateCantones();
+      });
+      $.getJSON('http://www.costa506realestate.com/distritos.json?' + auth, function(data) {
+        localStorage.setItem('distritos', JSON.stringify(data));
+        app.updateDistritos();
+      });
+      $.getJSON('http://www.costa506realestate.com/caracteristicas.json?' + auth, function(data) {
+        localStorage.setItem('caracteristicas', JSON.stringify(data));
+        app.updateCaracteristicas();
+      });
+      $.getJSON('http://www.costa506realestate.com/mensajes.json?' + auth, function(data) {
+        localStorage.setItem('mensajes', JSON.stringify(data));
+        app.updateMensajes();
+      });
+      $.getJSON('http://www.costa506realestate.com/propietarios.json?' + auth, function(data) {
+        localStorage.setItem('propietarios', JSON.stringify(data));
+        app.updatePropietarios();
+      });
+
+      $('#provincia').change();
+    }).fail(function(e) {
+      if (401 == parseInt(e.status)) {
+        alert('Wrong email or password!');
+      }
     });
-    $.getJSON('http://www.costa506realestate.com/provincias.json', function(data) {
-      localStorage.setItem('provincias', JSON.stringify(data));
-      app.updateProvincias();
-    });
-    $.getJSON('http://www.costa506realestate.com/cantones.json', function(data) {
-      localStorage.setItem('cantones', JSON.stringify(data));
-      app.updateCantones();
-    });
-    $.getJSON('http://www.costa506realestate.com/distritos.json', function(data) {
-      localStorage.setItem('distritos', JSON.stringify(data));
-      app.updateDistritos();
-    });
-    $.getJSON('http://www.costa506realestate.com/caracteristicas.json', function(data) {
-      localStorage.setItem('caracteristicas', JSON.stringify(data));
-      app.updateCaracteristicas();
-    });
-    $.getJSON('http://www.costa506realestate.com/mensajes.json', function(data) {
-      localStorage.setItem('mensajes', JSON.stringify(data));
-      app.updateMensajes();
-    });
-    $.getJSON('http://www.costa506realestate.com/propietarios.json', function(data) {
-      localStorage.setItem('propietarios', JSON.stringify(data));
-      app.updatePropietarios();
-    });
-    $('#provincia').change();
   },
   updateTipos: function() {
     var tipos = localStorage.getItem('tipos');
