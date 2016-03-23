@@ -79,12 +79,7 @@
           <div class="form-group">
             <label for="tipo_id" class="col-sm-2 control-label">Tipo</label>
             <div class="col-sm-10">
-              <select class="form-control" id="tipo_id" name="tipo_id">
-                <option value="">Buscar</option>
-                <% Tipo.order(:titulo).each do |tipo| %>
-                <option value="<%= tipo.id %>"><%= tipo.titulo %></option>
-                <% end %>
-              </select>
+              <select class="form-control" id="tipo_id" name="tipo_id"></select>
             </div>
           </div>
 
@@ -367,31 +362,14 @@
           <div class="form-group provincia-control">
             <label for="provincia" class="col-sm-2 control-label">Provincia</label>
             <div class="col-sm-10">
-              <select class="form-control" id="provincia" name="provincia">
-                <option value="">Buscar</option>
-                <% Provincia.order(:nombre).each do |p| %>
-                <option value="<%= p.nombre %>"
-                        data-provincia-id="<%= p.id %>">
-                  <%= p.nombre %>
-                </option>
-                <% end %>
-              </select>
+              <select class="form-control" id="provincia" name="provincia"></select>
             </div>
           </div>
 
           <div class="form-group canton-control">
             <label for="canton" class="col-sm-2 control-label">Canton</label>
             <div class="col-sm-10">
-              <select style="display: none;" id="canton_copy">
-                <option value="">Buscar</option>
-                <% Canton.order(:nombre).each do |c| %>
-                <option value="<%= c.nombre %>"
-                        data-provincia-id="<%= c.provincia_id %>"
-                        data-canton-id="<%= c.canton_id %>">
-                  <%= c.nombre %>
-                </option>
-                <% end %>
-              </select>
+              <select style="display: none;" id="canton_copy"></select>
               <select class="form-control" id="canton" name="canton">
               </select>
             </div>
@@ -400,16 +378,7 @@
           <div class="form-group distrito-control">
             <label for="distrito" class="col-sm-2 control-label">Distrito</label>
             <div class="col-sm-10">
-              <select style="display: none;" id="distrito_copy">
-                <option value="">Buscar</option>
-                <% Distrito.order(:nombre).each do |d| %>
-                <option value="<%= d.nombre %>"
-                        data-provincia-id="<%= d.provincia_id %>"
-                        data-canton-id="<%= d.canton_id %>">
-                  <%= d.nombre %>
-                </option>
-                <% end %>
-              </select>
+              <select style="display: none;" id="distrito_copy"></select>
               <select class="form-control" id="distrito" name="distrito">
               </select>
             </div>

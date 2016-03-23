@@ -39,8 +39,17 @@ var app = {
         app.updateSavedProperties();
       }
     });
+
+    $('#refresh').click(this.onRefreshData);
+    this.updateTipos();
+    this.updateProvincias();
+    this.updateCantones();
+    this.updateDistritos();
+    $('#provincia').change();
   },
   receivedEvent: function (id) {
+    app.updateLocations();
+
     console.log('Received Event: ' + id);
   },
   onDeviceReady: function () {
@@ -190,5 +199,142 @@ var app = {
       localStorage.removeItem(id);
       app.updateSavedProperties();
     }
+  },
+  onRefreshData: function() {
+    app.receivedEvent('onRefreshData');
+    // $.getJSON('http://www.costa506realestate.com/tipos.json', function(data) {
+    $.getJSON('http://localhost:3000/tipos.json', function(data) {
+      localStorage.setItem('tipos', JSON.stringify(data));
+      app.updateTipos();
+    });
+    // $.getJSON('http://www.costa506realestate.com/provincias.json', function(data) {
+    $.getJSON('http://localhost:3000/provincias.json', function(data) {
+      localStorage.setItem('provincias', JSON.stringify(data));
+      app.updateProvincias();
+    });
+    // $.getJSON('http://www.costa506realestate.com/cantones.json', function(data) {
+    $.getJSON('http://localhost:3000/cantones.json', function(data) {
+      localStorage.setItem('cantones', JSON.stringify(data));
+      app.updateCantones();
+    });
+    // $.getJSON('http://www.costa506realestate.com/distritos.json', function(data) {
+    $.getJSON('http://localhost:3000/distritos.json', function(data) {
+      localStorage.setItem('distritos', JSON.stringify(data));
+      app.updateDistritos();
+    });
+    $('#provincia').change();
+  },
+  updateTipos: function() {
+    var tipos = localStorage.getItem('tipos');
+    if (tipos != null) {
+      $('#tipo_id').html('');
+      $('#tipo_id').append(
+        $('<option></option>', { value: '' }).text('Buscar')
+      );
+
+      $(JSON.parse(tipos)).each(function() {
+        $('#tipo_id').append(
+          $('<option></option>', { value: this['id'] }).text(this['titulo'])
+        );
+      });
+    }
+  },
+  updateProvincias: function() {
+    var provincias = localStorage.getItem('provincias');
+    console.log(provincias);
+    if (provincias != null) {
+      $('#provincia').html('');
+      $('#provincia').append(
+        $('<option></option>', { value: '' }).text('Buscar')
+      );
+
+      $(JSON.parse(provincias)).each(function() {
+        $('#provincia').append(
+          $('<option></option>', { value: this['nombre'] }).attr('data-provincia-id', this['id']).text(this['nombre'])
+        );
+      });
+    }
+  },
+  updateCantones: function() {
+    var cantones = localStorage.getItem('cantones');
+    if (cantones != null) {
+      $('#canton_copy').html('');
+      $('#canton_copy').append(
+        $('<option></option>', { value: '' }).text('Buscar')
+      );
+
+      $(JSON.parse(cantones)).each(function() {
+        $('#canton_copy').append(
+          $('<option></option>', { value: this['nombre'] }).attr('data-provincia-id', this['provincia_id']).attr('data-canton-id', this['canton_id']).text(this['nombre'])
+        );
+      });
+    }
+  },
+  updateDistritos: function() {
+    var distritos = localStorage.getItem('distritos');
+    if (distritos != null) {
+      $('#distrito_copy').html('');
+      $('#distrito_copy').append(
+        $('<option></option>', { value: '' }).text('Buscar')
+      );
+
+      $(JSON.parse(distritos)).each(function() {
+        $('#distrito_copy').append(
+          $('<option></option>', { value: this['nombre'] }).attr('data-provincia-id', this['provincia_id']).attr('data-canton-id', this['canton_id']).text(this['nombre'])
+        );
+      });
+    }
+  },
+  updateLocations: function() {
+    $('#provincia').change(function() {
+      if ($(this).val().length > 0) {
+        $('.distrito-control').hide();
+
+        var provinciaId = $(this).children(':selected').data('provincia-id');
+        $('#canton_copy').clone(true).attr({
+          'id': 'canton',
+          'name': 'canton',
+          'class': 'form-control',
+          'style': 'display: block;'
+        }).replaceAll('#canton');
+
+        $('#canton option').each(function() {
+          $(this).show();
+          if ($(this).val().length > 0 && $(this).data('provincia-id') != provinciaId) {
+            $(this).remove();
+          }
+        });
+        $('.canton-control').show();
+      } else {
+        $('.distrito-control').hide();
+        $('.canton-control').hide();
+        $('#canton').val('');
+      }
+    });
+
+    $('#canton_copy').change(function() {
+      if ($(this).val() && $(this).val().length > 0) {
+        var provinciaId = $('#provincia').children(':selected').data('provincia-id');
+        var cantonId = $(this).children(':selected').data('canton-id');
+
+        $('#distrito_copy').clone(true).attr({
+          'id': 'distrito',
+          'name': 'distrito',
+          'class': 'form-control',
+          'style': 'display: block;'
+        }).replaceAll('#distrito');
+
+        $('#distrito option').each(function() {
+          $(this).show();
+          if ($(this).val().length > 0 && !($(this).data('provincia-id') == provinciaId && $(this).data('canton-id') == cantonId)) {
+            $(this).remove();
+          }
+        });
+        $('.distrito-control').show();
+      } else {
+        $('.distrito-control').hide();
+        $('#distrito').val('');
+      }
+    });
   }
 };
