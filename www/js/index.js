@@ -190,7 +190,7 @@ var app = {
       href += 'propiedad[listado]=alquiler';
     }
 
-    return '<a href="' + href + '" target="_blank">Import to site</a>';
+    return '<a href="#" onclick="window.open(\'' + href + '\', \'_system\'); return false;">Import to site</a>';
   },
   deletePropiedad: function() {
     app.receivedEvent('deletePropiedad');
@@ -202,23 +202,19 @@ var app = {
   },
   onRefreshData: function() {
     app.receivedEvent('onRefreshData');
-    // $.getJSON('http://www.costa506realestate.com/tipos.json', function(data) {
-    $.getJSON('http://localhost:3000/tipos.json', function(data) {
+    $.getJSON('http://www.costa506realestate.com/tipos.json', function(data) {
       localStorage.setItem('tipos', JSON.stringify(data));
       app.updateTipos();
     });
-    // $.getJSON('http://www.costa506realestate.com/provincias.json', function(data) {
-    $.getJSON('http://localhost:3000/provincias.json', function(data) {
+    $.getJSON('http://www.costa506realestate.com/provincias.json', function(data) {
       localStorage.setItem('provincias', JSON.stringify(data));
       app.updateProvincias();
     });
-    // $.getJSON('http://www.costa506realestate.com/cantones.json', function(data) {
-    $.getJSON('http://localhost:3000/cantones.json', function(data) {
+    $.getJSON('http://www.costa506realestate.com/cantones.json', function(data) {
       localStorage.setItem('cantones', JSON.stringify(data));
       app.updateCantones();
     });
-    // $.getJSON('http://www.costa506realestate.com/distritos.json', function(data) {
-    $.getJSON('http://localhost:3000/distritos.json', function(data) {
+    $.getJSON('http://www.costa506realestate.com/distritos.json', function(data) {
       localStorage.setItem('distritos', JSON.stringify(data));
       app.updateDistritos();
     });
