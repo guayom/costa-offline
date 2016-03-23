@@ -5,7 +5,7 @@
   <meta name="format-detection" content="telephone=no"/>
   <meta name="msapplication-tap-highlight" content="no"/>
   <meta name="viewport"
-        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi"/>
+        content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height"/>
   <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
   <link rel="stylesheet" type="text/css" href="css/index.css"/>
   <title>Costa 506 Offline</title>
@@ -16,12 +16,21 @@
        role="navigation">
     <div class="container">
       <div class="navbar-header">
-        <a class="navbar-brand" href="/offline">
+        <a class="navbar-brand" href="/">
           Costa 506 Offline
         </a>
       </div>
     </div>
   </nav>
+
+  <button id="refresh" class="btn btn-default">Refresh reference data</button>
+
+  <div id="loading" style="display: none;">
+    <img src="img/loading.gif">
+    <h1>
+      Please, wait.
+    </h1>
+  </div>
 
   <div class="container">
     <div class="row">
@@ -41,12 +50,420 @@
         </table>
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-sm-12">
+        <form method="get" id="new_propiedad"
+              class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="listado" class="col-sm-2 control-label">
+              Listado
+            </label>
+            <div class="col-sm-4">
+              <select class="form-control" id="listado" name="listado">
+                <option value="venta">Venta</option>
+                <option value="alquiler">Alquiler</option>
+                <option value="opcion_compra">Alquiler con opción de compra</option>
+                <option value="venta_alquiler">Venta ó Alquiler</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="titular" class="col-sm-2 control-label">Titular</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="titular" name="titular">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="tipo_id" class="col-sm-2 control-label">Tipo</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="tipo_id" name="tipo_id">
+                <option value="">Buscar</option>
+                <% Tipo.order(:titulo).each do |tipo| %>
+                <option value="<%= tipo.id %>"><%= tipo.titulo %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="direccion_exacta" class="col-sm-2 control-label">
+              Direccion exacta
+            </label>
+            <div class="col-sm-10">
+            <textarea class="form-control" id="direccion_exacta"
+                      name="direccion_exacta" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="direccion_uso_interno" class="col-sm-2 control-label">
+              Direccion uso interno
+            </label>
+            <div class="col-sm-10">
+            <textarea class="form-control" id="direccion_uso_interno"
+                      name="direccion_uso_interno" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="descripcion_publica" class="col-sm-2 control-label">
+              Descripcion publica
+            </label>
+            <div class="col-sm-10">
+            <textarea class="form-control" id="descripcion_publica"
+                      name="descripcion_publica" rows="10"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="valor_compra" class="col-sm-2 control-label">
+              Valor compra
+            </label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="valor_compra"
+                     name="valor_compra">
+            </div>
+
+            <label for="valor_alquiler" class="col-sm-2 control-label">
+              Valor alquiler
+            </label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="valor_alquiler"
+                     name="valor_alquiler">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="area_terreno" class="col-sm-2 control-label">
+              Area terreno
+            </label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="area_terreno"
+                     name="area_terreno">
+            </div>
+
+            <label for="area_construccion" class="col-sm-2 control-label">
+              Area construccion
+            </label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="area_construccion"
+                     name="area_construccion">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="pisos" class="col-sm-2 control-label">Pisos</label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="pisos" name="pisos">
+            </div>
+
+            <label for="dormitorios" class="col-sm-2 control-label">
+              Dormitorios
+            </label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="dormitorios"
+                     name="dormitorios">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="banos" class="col-sm-2 control-label">Banos</label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="banos" name="banos">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="estacionamiento" class="col-sm-2 control-label">
+              Estacionamiento
+            </label>
+            <div class="col-sm-4">
+              <input type="number" class="form-control" id="estacionamiento"
+                     name="estacionamiento">
+            </div>
+
+            <label for="tipo_de_estacionamiento" class="col-sm-2 control-label">
+              Tipo de estacionamiento
+            </label>
+            <div class="col-sm-4">
+              <select class="form-control" id="tipo_de_estacionamiento"
+                      name="tipo_de_estacionamiento">
+                <option value="">Buscar</option>
+                <option value="parqueo">Parqueo</option>
+                <option value="garaje">Garaje</option>
+                <option value="parqueo_techado">Parqueo techado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <% Caracteristica.all.each do |c| %>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="caracteristica_ids" value="<%= c.id %>">
+                  <%= c.titulo %>
+                </label>
+              </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="propietario_id" class="col-sm-2 control-label">
+              Propietario
+            </label>
+            <div class="col-sm-10">
+              <select class="form-control" id="propietario_id" name="propietario_id">
+                <option value="">Buscar</option>
+                <% Propietario.all.each do |p| %>
+                <option value="<%= p.id %>"><%= p.alt %></option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="opcion_compra">
+                  Opcion compra
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="incluye_mantenimiento">
+                  Incluye mantenimiento
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cuota_mantenimiento" class="col-sm-2 control-label">
+              Cuota mantenimiento
+            </label>
+            <div class="col-sm-10">
+              <input type="number" id="cuota_mantenimiento" name="cuota_mantenimiento" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="area_terreno" class="col-sm-2 control-label">
+              Area terreno
+            </label>
+            <div class="col-sm-10">
+              <input type="number" id="area_terreno" name="area_terreno" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="area_construccion" class="col-sm-2 control-label">
+              Area construccion
+            </label>
+            <div class="col-sm-10">
+              <input type="number" id="area_construccion" name="area_construccion" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="sala_comedor">
+                  Sala comedor
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="patio">
+                  Patio
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="patio_area" class="col-sm-2 control-label">
+              Patio area
+            </label>
+            <div class="col-sm-10">
+              <input type="number" id="patio_area" name="patio_area" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="amueblado">
+                  Amueblado
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" value="1" name="linea_blanca">
+                  Linea blanca
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fecha_construccion" class="col-sm-2 control-label">
+              Fecha construccion
+            </label>
+            <div class="col-sm-10">
+              <input type="number" id="fecha_construccion" name="fecha_construccion" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="otros" class="col-sm-2 control-label">
+              Otros
+            </label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="otros" name="otros" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="numero_plano_catastrado" class="col-sm-2 control-label">
+              Numero plano catastrado
+            </label>
+            <div class="col-sm-10">
+              <input type="text" id="numero_plano_catastrado" name="numero_plano_catastrado" class="form-control">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notas_uso_interno" class="col-sm-2 control-label">
+              Notas uso interno
+            </label>
+            <div class="col-sm-10">
+              <textarea class="form-control" id="notas_uso_interno" name="notas_uso_interno" rows="3"></textarea>
+            </div>
+          </div>
+
+          <div class="form-group provincia-control">
+            <label for="provincia" class="col-sm-2 control-label">Provincia</label>
+            <div class="col-sm-10">
+              <select class="form-control" id="provincia" name="provincia">
+                <option value="">Buscar</option>
+                <% Provincia.order(:nombre).each do |p| %>
+                <option value="<%= p.nombre %>"
+                        data-provincia-id="<%= p.id %>">
+                  <%= p.nombre %>
+                </option>
+                <% end %>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group canton-control">
+            <label for="canton" class="col-sm-2 control-label">Canton</label>
+            <div class="col-sm-10">
+              <select style="display: none;" id="canton_copy">
+                <option value="">Buscar</option>
+                <% Canton.order(:nombre).each do |c| %>
+                <option value="<%= c.nombre %>"
+                        data-provincia-id="<%= c.provincia_id %>"
+                        data-canton-id="<%= c.canton_id %>">
+                  <%= c.nombre %>
+                </option>
+                <% end %>
+              </select>
+              <select class="form-control" id="canton" name="canton">
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group distrito-control">
+            <label for="distrito" class="col-sm-2 control-label">Distrito</label>
+            <div class="col-sm-10">
+              <select style="display: none;" id="distrito_copy">
+                <option value="">Buscar</option>
+                <% Distrito.order(:nombre).each do |d| %>
+                <option value="<%= d.nombre %>"
+                        data-provincia-id="<%= d.provincia_id %>"
+                        data-canton-id="<%= d.canton_id %>">
+                  <%= d.nombre %>
+                </option>
+                <% end %>
+              </select>
+              <select class="form-control" id="distrito" name="distrito">
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <% Mensaje.all.each do |m| %>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="mensaje_ids" value="<%= m.id %>">
+                  <%= m.mensaje %>
+                </label>
+              </div>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" id="add_propiedad" class="btn btn-primary">Guardar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
 <script type="text/javascript" src="cordova.js"></script>
+
 <script type="text/javascript" src="js/jquery-2.2.2.js"></script>
+<script type="text/javascript">
+  $.fn.serializeObject = function() {
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+      if (o[this.name] !== undefined) {
+        if (!o[this.name].push) {
+          o[this.name] = [o[this.name]];
+        }
+        o[this.name].push(this.value || '');
+      } else {
+        o[this.name] = this.value || '';
+      }
+    });
+    return o;
+  };
+</script>
+
+<script type="text/javascript" src="js/moment-with-locales.js"></script>
+
 <script type="text/javascript" src="js/index.js"></script>
+
 <script type="text/javascript">
   app.initialize();
 </script>

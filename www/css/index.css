@@ -1,11 +1,36 @@
+body {
+  padding-top: 70px;
+}
+
 #navbar a {
-    color: white;
+  color: white;
 }
 
 .online {
-    background-color: green;
+  background-color: green;
 }
 
 .offline {
-    background-color: red;
+  background-color: red;
+}
+
+#refresh {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+#loading {
+  padding-left: 60px;
+}
+#loading img {
+  float: left;
+}
+#loading h1 {
+  float: left;
+  padding-top: 20px;
+}
+
+.fake-link {
+  cursor: pointer;
+  border-bottom: 1px dotted black;
 }
