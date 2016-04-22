@@ -162,7 +162,7 @@
               Valor compra
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="valor_compra"
+              <input type="text" class="form-control" id="valor_compra"
                      name="valor_compra">
             </div>
           </div>
@@ -172,7 +172,7 @@
               Valor alquiler
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="valor_alquiler"
+              <input type="text" class="form-control" id="valor_alquiler"
                      name="valor_alquiler">
             </div>
           </div>
@@ -204,7 +204,7 @@
               Cuota mantenimiento
             </label>
             <div class="col-sm-4">
-              <input type="number" id="cuota_mantenimiento" name="cuota_mantenimiento" class="form-control">
+              <input type="text" id="cuota_mantenimiento" name="cuota_mantenimiento" class="form-control">
             </div>
           </div>
 
@@ -213,7 +213,7 @@
               Area terreno
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="area_terreno"
+              <input type="text" class="form-control" id="area_terreno"
                      name="area_terreno">
             </div>
           </div>
@@ -223,7 +223,7 @@
               Area construccion
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="area_construccion"
+              <input type="text" class="form-control" id="area_construccion"
                      name="area_construccion">
             </div>
           </div>
@@ -231,7 +231,7 @@
           <div class="form-group">
             <label for="pisos" class="col-sm-2 control-label">Pisos</label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="pisos" name="pisos">
+              <input type="text" class="form-control" id="pisos" name="pisos">
             </div>
           </div>
 
@@ -240,7 +240,7 @@
               Dormitorios
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="dormitorios"
+              <input type="text" class="form-control" id="dormitorios"
                      name="dormitorios">
             </div>
           </div>
@@ -248,7 +248,7 @@
           <div class="form-group">
             <label for="banos" class="col-sm-2 control-label">Banos</label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="banos" name="banos">
+              <input type="text" class="form-control" id="banos" name="banos">
             </div>
           </div>
 
@@ -279,7 +279,7 @@
               Patio area
             </label>
             <div class="col-sm-4">
-              <input type="number" id="patio_area" name="patio_area" class="form-control">
+              <input type="text" id="patio_area" name="patio_area" class="form-control">
             </div>
           </div>
 
@@ -288,7 +288,7 @@
               Estacionamiento
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="estacionamiento"
+              <input type="text" class="form-control" id="estacionamiento"
                      name="estacionamiento">
             </div>
           </div>
@@ -335,7 +335,7 @@
               Fecha construccion
             </label>
             <div class="col-sm-10">
-              <input type="number" id="fecha_construccion" name="fecha_construccion" class="form-control">
+              <input type="text" id="fecha_construccion" name="fecha_construccion" class="form-control">
             </div>
           </div>
 
@@ -419,7 +419,7 @@
               Comision
             </label>
             <div class="col-sm-4">
-              <input type="number" class="form-control" id="comision"
+              <input type="text" class="form-control" id="comision"
                      name="comision">
             </div>
           </div>
@@ -472,6 +472,51 @@
 </script>
 
 <script type="text/javascript" src="js/jquery.multi-select.js"></script>
+<script type="text/javascript" src="js/bootstrap-number-input.js"></script>
+<script type="text/javascript" src="js/autoNumeric-1.9.43.js"></script>
+
+<script type="text/javascript">
+  $(function() {
+    $('form').submit(function() {
+      $('input').each(function() {
+        var self = $(this);
+        try{
+          var v = self.autoNumeric('get');
+          // if (v) {
+          //   debugger;
+          // }
+          self.autoNumeric('destroy');
+          self.val(v);
+        } catch(err) {
+          // Not an autonumeric field.
+        }
+      });
+      return true;
+    });
+
+    var elements = [
+      '#valor_compra',
+      '#valor_alquiler',
+      '#cuota_mantenimiento',
+      '#area_terreno',
+      '#pisos',
+      '#dormitorios',
+      '#patio_area',
+      '#estacionamiento',
+      '#fecha_construccion'
+    ];
+
+    for (var i = 0; i < elements.length; i++) {
+      $(elements[i]).autoNumeric('init', {
+        mDec: 0
+      });
+    }
+
+    $('#area_construccion').autoNumeric('init');
+    $('#banos').autoNumeric('init');
+    $('#comision').autoNumeric('init');
+  });
+</script>
 
 <script type="text/javascript" src="js/moment-with-locales.js"></script>
 
