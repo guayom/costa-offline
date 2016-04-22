@@ -72,12 +72,6 @@ var app = {
     var data = $('#new_propiedad').serializeObject();
     data['created_at'] = id;
 
-    var val = [];
-    $(':checkbox:checked').each(function(i) {
-      val[i] = $(this).val();
-    });
-    data['caracteristica_ids'] = val;
-
     localStorage.setItem(id, JSON.stringify(data));
     app.updateSavedProperties();
     document.forms['new_propiedad'].reset();
@@ -132,28 +126,26 @@ var app = {
     var fields = [
       'listado',
       'titular',
-      'tipo_id',
+      'propietario_id',
       'direccion_exacta',
       'direccion_uso_interno',
       'descripcion_publica',
+      'moneda',
       'valor_compra',
       'valor_alquiler',
-      'area_terreno',
-      'area_construccion',
-      'pisos',
-      'dormitorios',
-      'banos',
-      'estacionamiento',
-      'tipo_de_estacionamiento',
-      'propietario_id',
       'opcion_compra',
       'incluye_mantenimiento',
       'cuota_mantenimiento',
       'area_terreno',
       'area_construccion',
+      'pisos',
+      'dormitorios',
+      'banos',
       'sala_comedor',
       'patio',
       'patio_area',
+      'estacionamiento',
+      'tipo_de_estacionamiento',
       'amueblado',
       'linea_blanca',
       'fecha_construccion',
@@ -163,6 +155,9 @@ var app = {
       'provincia',
       'canton',
       'distrito',
+      'cuarto_de_servicio',
+      'cuota_mantenimiento_moneda',
+      'comision'
     ];
     var href = 'http://www.costa506realestate.com/admin/propiedad/new?';
 
@@ -174,6 +169,12 @@ var app = {
 
     href += 'propiedad[estado]=disponible&';
     href += 'return_to=' + encodeURIComponent('http://www.costa506realestate.com/admin/propiedad') + '&';
+
+    if (data['tipo_ids']) {
+      for (var j = 0; j < data['tipo_ids'].length; j++) {
+        href += 'propiedad[tipo_ids][]=' + data['tipo_ids'][j] + '&';
+      }
+    }
 
     if (data['caracteristica_ids']) {
       for (var j = 0; j < data['caracteristica_ids'].length; j++) {
@@ -259,14 +260,20 @@ var app = {
   updateTipos: function() {
     var tipos = localStorage.getItem('tipos');
     if (tipos != null) {
-      $('#tipo_id').html('');
-      $('#tipo_id').append(
-        $('<option></option>', { value: '' }).text('Buscar')
-      );
+      $('#tipos').html('');
 
       $(JSON.parse(tipos)).each(function() {
-        $('#tipo_id').append(
-          $('<option></option>', { value: this['id'] }).text(this['titulo'])
+        $('#tipos').append(
+          $('<div></div>', {class: 'checkbox'}).html(
+            $('<label></label>').html([
+              $('<input>', {
+                type: 'checkbox',
+                name: 'tipo_ids',
+                value: this['id']
+              }),
+              this['titulo']
+            ])
+          )
         );
       });
     }
