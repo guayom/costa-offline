@@ -51,6 +51,7 @@ var app = {
     $('#provincia').change();
 
     this.updateTiposCaracteristicas();
+    this.updateTiposHiddenFields();
   },
   receivedEvent: function (id) {
     app.updateLocations();
@@ -471,6 +472,19 @@ var app = {
     $('#tipos input').eq(0).change();
   },
   updateTiposHiddenFields: function() {
-    debugger;
+    $('#tipos input').change(function() {
+      $('.tipos-hidden').each(function() {
+        $(this).removeClass('tipos-hidden');
+        $(this).show();
+      });
+
+      $('[name="tipo_ids"]:checked').each(function() {
+        tiposHiddenFields[this.value].forEach(function(hiddenName) {
+          $('.' + hiddenName + '-field').hide();
+          $('.' + hiddenName + '-field').addClass('tipos-hidden');
+        });
+      });
+    });
+    $('#tipos input').eq(0).change();
   }
 };
