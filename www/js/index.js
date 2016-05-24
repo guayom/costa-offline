@@ -142,6 +142,7 @@ var app = {
       'area_construccion',
       'pisos',
       'dormitorios',
+      'oficinas',
       'banos',
       'sala_comedor',
       'patio',
