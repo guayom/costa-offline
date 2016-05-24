@@ -49,6 +49,8 @@ var app = {
     this.updateMensajes();
     this.updatePropietarios();
     $('#provincia').change();
+
+    this.updateTiposCaracteristicas();
   },
   receivedEvent: function (id) {
     app.updateLocations();
@@ -170,10 +172,20 @@ var app = {
     href += 'propiedad[estado]=disponible&';
     href += 'return_to=' + encodeURIComponent('http://www.costa506realestate.com/admin/propiedad') + '&';
 
+    if (!$.isArray(data['tipo_ids'])) {
+      var x = data['tipo_ids'];
+      data['tipo_ids'] = [x];
+    }
+
     if (data['tipo_ids']) {
       for (var j = 0; j < data['tipo_ids'].length; j++) {
         href += 'propiedad[tipo_ids][]=' + data['tipo_ids'][j] + '&';
       }
+    }
+
+    if (!$.isArray(data['caracteristica_ids'])) {
+      var y = data['caracteristica_ids'];
+      data['caracteristica_ids'] = [y];
     }
 
     if (data['caracteristica_ids']) {
@@ -262,7 +274,13 @@ var app = {
     if (tipos != null) {
       $('#tipos').html('');
 
+      caracteristicasTipos = {};
+      tiposHiddenFields = {};
+
       $(JSON.parse(tipos)).each(function() {
+        tiposHiddenFields[this['id']] = this['hidden_ids'];
+        caracteristicasTipos[this['id']] = this['car_ids'];
+
         $('#tipos').append(
           $('<div></div>', {class: 'checkbox'}).html(
             $('<label></label>').html([
@@ -434,5 +452,24 @@ var app = {
         $('#distrito').val('');
       }
     });
+  },
+  updateTiposCaracteristicas: function() {
+    $('#tipos input').change(function() {
+      $('#caracteristicas input').each(function() {
+        $(this).closest('div').hide();
+      });
+      $('[name="tipo_ids"]:checked').each(function() {
+        // var tipoId = this.value;
+        // if (caracteristicasTipos[tipoId].length > 0) {
+          caracteristicasTipos[this.value].forEach(function(caracteristicaId) {
+            $('#caracteristicas [value="' + caracteristicaId + '"]').closest('div').show();
+          });
+        // }
+      });
+    });
+    $('#tipos input').eq(0).change();
+  },
+  updateTiposHiddenFields: function() {
+    debugger;
   }
 };
