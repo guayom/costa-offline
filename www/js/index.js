@@ -174,7 +174,7 @@ var app = {
     href += 'propiedad[estado]=disponible&';
     href += 'return_to=' + encodeURIComponent('http://www.costa506realestate.com/admin/propiedad') + '&';
 
-    if (!$.isArray(data['tipo_ids'])) {
+    if (data['tipo_ids'] && !$.isArray(data['tipo_ids'])) {
       var x = data['tipo_ids'];
       data['tipo_ids'] = [x];
     }
@@ -185,7 +185,7 @@ var app = {
       }
     }
 
-    if (!$.isArray(data['caracteristica_ids'])) {
+    if (data['caracteris'] && !$.isArray(data['caracteristica_ids'])) {
       var y = data['caracteristica_ids'];
       data['caracteristica_ids'] = [y];
     }
