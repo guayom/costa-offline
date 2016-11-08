@@ -23,24 +23,23 @@
     <preference name="disable-cursor" value="false" />
     <preference name="android-minSdkVersion" value="14" />
     <preference name="android-installLocation" value="auto" />
-    <plugin name="cordova-plugin-battery-status" spec="1.1.0" source="pgb" />
-    <gap:plugin name="cordova-plugin-camera" />
-    <gap:plugin name="cordova-plugin-media-capture" />
-    <gap:plugin name="cordova-plugin-console" />
-    <gap:plugin name="cordova-plugin-contacts" />
-    <gap:plugin name="cordova-plugin-device" />
-    <gap:plugin name="cordova-plugin-device-motion" />
-    <gap:plugin name="cordova-plugin-device-orientation" />
-    <gap:plugin name="cordova-plugin-dialogs" />
-    <gap:plugin name="cordova-plugin-file" />
-    <gap:plugin name="cordova-plugin-file-transfer" />
-    <gap:plugin name="cordova-plugin-geolocation" />
-    <gap:plugin name="cordova-plugin-globalization" />
-    <gap:plugin name="cordova-plugin-inappbrowser" />
-    <gap:plugin name="cordova-plugin-media" />
-    <gap:plugin name="cordova-plugin-network-information" />
-    <gap:plugin name="cordova-plugin-splashscreen" />
-    <gap:plugin name="cordova-plugin-vibration" />
+    <plugin name="cordova-plugin-battery-status" spec="1.1.0" source="npm" />
+    <plugin name="cordova-plugin-camera" spec="1.2.0" source="npm"/>
+    <plugin name="cordova-plugin-media-capture" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-console" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-contacts" spec="1.1.0" source="npm"/>
+    <plugin name="cordova-plugin-device" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-device-motion" spec="1.1.1" source="npm"/>
+    <plugin name="cordova-plugin-device-orientation" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-dialogs" spec="1.1.1" source="npm"/>
+    <plugin name="cordova-plugin-file" spec="3.0.0" source="npm"/>
+    <plugin name="cordova-plugin-file-transfer" spec="1.3.0" source="npm"/>
+    <plugin name="cordova-plugin-geolocation" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-globalization" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-inappbrowser" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-media" spec="1.0.1" source="npm"/>
+    <plugin name="cordova-plugin-splashscreen" spec="2.1.0" source="npm"/>
+    <plugin name="cordova-plugin-vibration" spec="1.2.0" source="npm"/>
     <icon src="icon.png" />
     <icon gap:platform="android" gap:qualifier="ldpi" src="www/res/icon/android/icon-36-ldpi.png" />
     <icon gap:platform="android" gap:qualifier="mdpi" src="www/res/icon/android/icon-48-mdpi.png" />
