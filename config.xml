@@ -24,7 +24,6 @@
     <preference name="android-minSdkVersion" value="14" />
     <preference name="android-installLocation" value="auto" />
     <plugin name="cordova-plugin-battery-status" spec="1.1.0" source="npm" />
-    <plugin name="cordova-plugin-camera" spec="1.2.0" source="npm"/>
     <plugin name="cordova-plugin-media-capture" spec="1.0.1" source="npm"/>
     <plugin name="cordova-plugin-console" spec="1.0.1" source="npm"/>
     <plugin name="cordova-plugin-contacts" spec="1.1.0" source="npm"/>
