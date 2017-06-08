@@ -359,6 +359,10 @@ var app = {
           )
         );
       });
+
+      $('.selectpicker').selectpicker({
+        windowPadding: 70
+      });
     }
   },
   updateCaracteristicas: function() {
